@@ -4,4 +4,4 @@ __Run Command__
 
 `rosrun image_transport_tutorial homework`
 
-print 'hoge'
+~~~rosrun image_transport_tutorial homework~~~
