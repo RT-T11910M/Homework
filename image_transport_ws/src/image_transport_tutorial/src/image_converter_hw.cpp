@@ -122,6 +122,11 @@ public:
       int h = stats.ptr<int>(max_areaID)[3]; // BB height
       cv::rectangle(label_img, cv::Rect(x, y, w, h), cv::Scalar(0, 255, 0), 2);
 
+      // Display Max_area num
+      std::stringstream area_num;
+      area_num << stats.ptr<int>(max_areaID)[4];
+      cv::putText(label_img, "Area: " + area_num.str(), cv::Point(x+5, y+20), 0, 0.7, cv::Scalar(0, 255, 255), 2);
+
       cv::imshow("label_img", label_img);
       cv::waitKey();
     }
