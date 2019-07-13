@@ -1,4 +1,4 @@
 # Homework
 
-## command
-~rosrun image_transport_tutorial homework~
+__command__
+  rosrun image_transport_tutorial homework
