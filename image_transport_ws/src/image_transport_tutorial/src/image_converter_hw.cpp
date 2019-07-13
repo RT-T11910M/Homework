@@ -2,8 +2,6 @@
 #include <image_transport/image_transport.h>
 #include <cv_bridge/cv_bridge.h>
 #include <sensor_msgs/image_encodings.h>
-//#include <opencv2/imgproc/imgproc.hpp>
-//#include <opencv2/highgui/highgui.hpp>
 #include <opencv2/opencv.hpp>
 
 #include <stdio.h>
@@ -34,11 +32,12 @@ cv::Mat MulImg_SingleWin(const cv::Mat &img, const cv::Mat &gray_img, cv::Mat &b
   cv::putText(base, "Original Image", cv::Point(base.cols / 4 - 100, base.rows / 2 - 50), 0, 1.5, cv::Scalar(0, 200, 255), 4, CV_AA);
   cv::putText(base, "Gray Image", cv::Point(3 * base.cols / 4 - 100, base.rows / 2 - 50), 0, 1.5, cv::Scalar(0, 200, 255), 4, CV_AA);
   cv::putText(base, "Binary Image", cv::Point(base.cols / 4 - 100, base.rows - 50), 0, 1.5, cv::Scalar(0, 200, 255), 4, CV_AA);
-  cv::putText(base, "Label Image", cv::Point(3 * base.cols / 4 - 100, base.rows - 50), 0, 1.5, cv::Scalar(0, 200, 255), 4, CV_AA);
+  cv::putText(base, "Caputure the image", cv::Point(5 * base.cols / 8, 3 * base.rows / 4), 0, 1.0, cv::Scalar(200, 200, 200), 4, CV_AA);
+  cv::putText(base, "by pressing the 's' key", cv::Point(5 * base.cols / 8 - 20, 3 * base.rows / 4 + 50), 0, 1.0, cv::Scalar(200, 200, 200), 4, CV_AA);
 
   cv::Mat show_img;
   cv::resize(base, show_img, cv::Size(), 0.6, 0.6);
-  cv::imshow("show_window", show_img);
+  cv::imshow("Image Window", show_img);
 
   return base;
 }
@@ -58,8 +57,6 @@ public:
     image_sub_ = it_.subscribe("/usb_cam/image_raw", 1, &ImageConverter::imageCb, this);
 
     image_pub_raw = it_.advertise("/image_converter/output_raw", 1);
-    image_pub_bin = it_.advertise("/image_converter/output_video_bin", 1);
-    image_pub_BB = it_.advertise("/image_converter/output_video_BB", 1);
   }
 
   void imageCb(const sensor_msgs::ImageConstPtr &msg)
@@ -125,24 +122,7 @@ public:
       int h = stats.ptr<int>(max_areaID)[3]; // BB height
       cv::rectangle(label_img, cv::Rect(x, y, w, h), cv::Scalar(0, 255, 0), 2);
 
-      // Show Max Area value
-      char *area_num;
-      sprintf(area_num, "area: %d", max_area);
-      cv::putText(label_img, area_num, cv::Point(x + 5, y + 30), 0, 1.2, cv::Scalar(220, 220, 220), 4, CV_AA);
-
-      // Displays window
-      cv::Mat dst;
-      cv::Rect ROI = cv::Rect(0, 0, cv_ptr->image.cols, cv_ptr->image.rows);
-      ROI.x = cv_ptr->image.cols;
-      ROI.y = cv_ptr->image.rows;
-      label_img.copyTo(base(ROI));
-
-      cv::putText(base, "Label Image", cv::Point(3 * base.cols / 4 - 100, base.rows - 50), 0, 1.5, cv::Scalar(0, 200, 255), 4, CV_AA);
-      dst = base.clone();
-
-      cv::resize(dst, dst, cv::Size(), 0.6, 0.6);
-      cv::destroyWindow("show_window");
-      cv::imshow("show_window", dst);
+      cv::imshow("label_img", label_img);
       cv::waitKey();
     }
   }
