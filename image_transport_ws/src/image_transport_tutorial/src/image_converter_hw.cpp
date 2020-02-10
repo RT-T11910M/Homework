@@ -77,7 +77,7 @@ public:
     cv::cvtColor(cv_ptr->image, gray_img, CV_BGR2GRAY);
 
     // gray to bin
-    cv::threshold(gray_img, bin_img, 0, 255, cv::THRESH_BINARY | cv::THRESH_OTSU);
+    cv::threshold(gray_img, bin_img, 0, 255, cv::THRESH_BINARY_INV | cv::THRESH_OTSU);
 
     base = MulImg_SingleWin(cv_ptr->image, gray_img, bin_img);
 
@@ -116,6 +116,7 @@ public:
           max_areaID = i;
         }
       }
+
       int x = stats.ptr<int>(max_areaID)[0]; // begin point
       int y = stats.ptr<int>(max_areaID)[1]; // end point
       int w = stats.ptr<int>(max_areaID)[2]; // BB width
@@ -129,6 +130,11 @@ public:
 
       cv::imshow("label_img", label_img);
       cv::waitKey();
+    }
+    else if (key=='q')
+    {
+      cv::destroyAllWindows();
+      ros::shutdown();
     }
   }
 };

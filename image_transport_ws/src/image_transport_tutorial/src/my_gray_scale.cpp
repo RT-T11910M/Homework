@@ -7,7 +7,7 @@
 
 static const std::string OPENCV_WINDOW = "Image window";
 
-class ImageConverter
+class ImageConverter_Gray
 {
   ros::NodeHandle nh_;
   image_transport::ImageTransport it_;
@@ -15,17 +15,17 @@ class ImageConverter
   image_transport::Publisher image_pub_;
 
 public:
-  ImageConverter()
+  ImageConverter_Gray()
     : it_(nh_)
   {
     // Subscrive to input video feed and publish output video feed
-    image_sub_ = it_.subscribe("/image_input", 1, &ImageConverter::imageCb, this);
+    image_sub_ = it_.subscribe("/image_input", 1, &ImageConverter_Gray::imageCb, this);
     image_pub_ = it_.advertise("/image_output", 1);
 
-    cv::namedWindow(OPENCV_WINDOW);
+    //cv::namedWindow(OPENCV_WINDOW);
   }
 
-  ~ImageConverter()
+  ~ImageConverter_Gray()
   {
     cv::destroyWindow(OPENCV_WINDOW);
   }
@@ -50,11 +50,11 @@ public:
     */
 		  
 		cv::cvtColor(cv_ptr->image, cv_ptr->image, CV_BGR2GRAY);
-		cv::threshold(cv_ptr->image, cv_ptr->image, 0, 255, cv::THRESH_BINARY | cv::THRESH_OTSU);
+		//cv::threshold(cv_ptr->image, cv_ptr->image, 0, 255, cv::THRESH_BINARY | cv::THRESH_OTSU);
 		   
     // Update GUI Window
-    cv::imshow(OPENCV_WINDOW, cv_ptr->image);
-    cv::waitKey(3);
+    //cv::imshow(OPENCV_WINDOW, cv_ptr->image);
+    //cv::waitKey(3);
 
     // Output modified video stream
     cv::cvtColor(cv_ptr->image, cv_ptr->image, CV_GRAY2BGR);
@@ -64,8 +64,8 @@ public:
 
 int main(int argc, char** argv)
 {
-  ros::init(argc, argv, "image_converter");
-  ImageConverter ic;
+  ros::init(argc, argv, "image_converter_gray");
+  ImageConverter_Gray ic;
   ros::spin();
   return 0;
 }

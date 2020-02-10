@@ -139,12 +139,21 @@ include_directories(
 ## The recommended prefix ensures that target names across packages don't collide
 add_executable(my_subscriber src/my_subscriber.cpp)
 target_link_libraries(my_subscriber ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+
 add_executable(my_publisher src/my_publisher.cpp)
 target_link_libraries(my_publisher ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+
 add_executable(my_image_converter src/my_image_converter.cpp)
 target_link_libraries(my_image_converter ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+
 add_executable(homework src/image_converter_hw.cpp)
 target_link_libraries(homework ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+
+add_executable(gray_scale src/my_gray_scale.cpp)
+target_link_libraries(gray_scale ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+
+add_executable(binary src/my_bin.cpp)
+target_link_libraries(binary ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
